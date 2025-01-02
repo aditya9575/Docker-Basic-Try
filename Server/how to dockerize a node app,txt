@@ -1,0 +1,35 @@
+create the node app as it is and then in the main server folder inside which you have the node app make a file named -> "Dockerfile"
+
+now we will write configurations inside this Dockerfile for our project ->
+# we will start by specifying the base image's operating system which we kept as ubuntu
+FROM ubuntu
+# then for this base image we need to install node on it 
+RUN apt-get update
+RUN apt-get install -y curl
+RUN curl -sl https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get upgrade -y    
+RUN apt-get install -y nodejs
+
+# we copy of the necessary files to be kept in the docker image
+COPY package.json package.json
+COPY package-lock.json package-lock.json
+COPY index.js index.js
+
+# we specify the run command 
+RUN npm install 
+
+# we specify the entry point
+ENTRYPOINT [ "node" , "index.js" ]
+
+
+
+# now to create the image we run the command -> docker build -t aditya-firstNodejs-docker-app .
+(This dot means that my file exists in this folder only)
+
+
+[point to be noted is till now this image is not on docker.io but only in our local file system so we can only use it inside our system]
+
+to run into our system locally => 
+open cmd  init -> docker run -it aditya-firstnodejs-docker-app 
+This will open run the image locally but still we need to expose the docker port to our local port
+-> 
